@@ -1,0 +1,1 @@
+export const basedUrl = "https://app.xylox.ai/api";
