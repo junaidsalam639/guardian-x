@@ -6,8 +6,7 @@ import CaseTabs from '@/components/case-management/case-tabs';
 async function CaseManagement() {
     const response = await fetch(`${basedUrl}/cases`);
     const data = await response.json();
-    console.log(data, 'datadatadata')
-
+    console.log("Case Management Data:", data);
     return (
         <>
             <DashboardProvider>

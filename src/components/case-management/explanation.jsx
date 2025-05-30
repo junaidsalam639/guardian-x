@@ -4,8 +4,11 @@ import { TabsContent } from "@/components/ui/tabs"
 import {
     MessageSquare,
 } from "lucide-react"
+import ReactMarkdown from 'react-markdown'
 
 export default function Explanation({ caseData }) {
+
+    console.log("Rendering Explanation component with caseData:", caseData?.explanation);
 
     return (
         <TabsContent value="explanation" className="space-y-4">
@@ -18,13 +21,13 @@ export default function Explanation({ caseData }) {
                     <CardDescription>Human-readable summary of the security analysis</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="prose prose-sm max-w-none">
-                        <div className="whitespace-pre-wrap text-sm leading-relaxed">{caseData?.explanation}</div>
+                    <div className="prose prose-sm max-w-none whitespace-pre-wrap text-sm leading-relaxed">
+                        <ReactMarkdown>
+                            {caseData?.explanation}
+                        </ReactMarkdown>
                     </div>
                 </CardContent>
             </Card>
         </TabsContent>
-
-
     )
 }

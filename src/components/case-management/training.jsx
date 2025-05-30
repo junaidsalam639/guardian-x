@@ -10,6 +10,7 @@ import {
     ChevronRight,
     Brain,
 } from "lucide-react"
+import ReactMarkdown from 'react-markdown'
 
 const JsonViewer = ({ data, title }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -56,8 +57,10 @@ export default function Training({ caseData }) {
                         <div>
                             <h3 className="font-semibold mb-2">Improvement Recommendations</h3>
                             <div className="bg-muted p-4 rounded-md">
-                                <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                                    {caseData?.training_signals.improvement_recommendations}
+                                <div className="prose prose-sm max-w-none whitespace-pre-wrap text-sm leading-relaxed">
+                                    <ReactMarkdown>
+                                        {caseData?.training_signals.improvement_recommendations}
+                                    </ReactMarkdown>
                                 </div>
                             </div>
                         </div>
@@ -65,6 +68,5 @@ export default function Training({ caseData }) {
                 </CardContent>
             </Card>
         </TabsContent>
-
     )
 }

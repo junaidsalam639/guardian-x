@@ -24,42 +24,42 @@ const data = {
     },
     {
       title: "Cyber Security",
-      url: "#",
+      url: "/cyber-security",
       icon: ShieldAlertIcon,
     },
     {
       title: "Physical Security",
-      url: "#",
+      url: "/physical-security",
       icon: LockIcon,
     },
     {
       title: "GuardianY",
-      url: "#",
+      url: "/guardian-y",
       icon: Shield,
     },
     {
       title: "Threat Intelligence",
-      url: "#",
+      url: "/threat-intelligence",
       icon: RadarIcon,
     },
     {
       title: "Threat Response",
-      url: "#",
+      url: "/threat-response",
       icon: Zap,
     },
     {
       title: "MITRE Framework",
-      url: "#",
+      url: "/mitre-framework",
       icon: Target,
     },
     {
       title: "Compliance",
-      url: "#",
+      url: "/compliance",
       icon: FileCheck,
     },
     {
       title: "Log Ingestion",
-      url: "#",
+      url: "/log-ingestion",
       icon: ServerIcon,
     },
     {
@@ -74,7 +74,7 @@ const data = {
     },
     {
       title: "Security Management",
-      url: "#",
+      url: "/security-management",
       icon: Settings,
     },
   ],

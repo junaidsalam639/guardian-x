@@ -2,6 +2,7 @@ import React from 'react'
 import DashboardProvider from '../dashboard-provider'
 import { basedUrl } from '@/lib/based-url'
 import LogTable from '@/components/log-management/log-table';
+import LogBarCharts from '@/components/log-management/log-bar-chart';
 
 async function LogManagement() {
     const response = await fetch(`${basedUrl}/logs`);
@@ -11,6 +12,7 @@ async function LogManagement() {
         <>
             <DashboardProvider>
                 <div className="px-5">
+                    <LogBarCharts logs={data} />
                     <LogTable logs={data} />
                 </div>
             </DashboardProvider>
