@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { FileCheck, Folder, LockIcon, Logs, RadarIcon, ServerIcon, Settings, Shield, ShieldAlertIcon, Target, TargetIcon, Zap } from "lucide-react";
+import { FileCheck, FileScan, Folder, LockIcon, Logs, RadarIcon, ServerIcon, Settings, Shield, ShieldAlertIcon, Target, TargetIcon, Zap } from "lucide-react";
 
 const data = {
   navMain: [
@@ -61,6 +61,11 @@ const data = {
       title: "Log Ingestion",
       url: "/log-ingestion",
       icon: ServerIcon,
+    },
+    {
+      title: "Detailed Analysis",
+      url: "/detailed-analysis",
+      icon: FileScan,
     },
     {
       title: "Case Management",

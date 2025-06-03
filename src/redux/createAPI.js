@@ -6,8 +6,8 @@ export const createAPI = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://app.xylox.ai/api/',
         headers: {
-            // 'Content-Type': 'application/json',
-            // 'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
         }
     }),
     endpoints: (builder) => ({

@@ -7,9 +7,6 @@ import {
 import ReactMarkdown from 'react-markdown'
 
 export default function Explanation({ caseData }) {
-
-    console.log("Rendering Explanation component with caseData:", caseData?.explanation);
-
     return (
         <TabsContent value="explanation" className="space-y-4">
             <Card>

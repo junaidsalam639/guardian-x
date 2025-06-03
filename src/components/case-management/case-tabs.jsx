@@ -4,33 +4,24 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import {
     Shield,
-    AlertTriangle,
     FileText,
     Target,
     CheckCircle,
     Eye,
     Search,
-    TrendingUp,
-    Database,
     Settings,
     BarChart3,
-    Network,
     Brain,
     FileCheck,
     MessageSquare,
     Archive,
 } from "lucide-react"
-import Alerts from "./alerts"
 import Memory from "./memory"
 import CaseSummary from "./case-summary"
-import ContextData from "./context-data"
-import Correlation from "./correlation"
 import Decision from "./decision"
 import Explanation from "./explanation"
 import FactChacker from "./fact-chacker"
 import Investigation from "./investigation"
-import Logs from "./logs"
-import ParsedLogs from "./parsed-logs"
 import Remediation from "./remediation"
 import ThreatIntel from "./threat-intel"
 import Training from "./training"
@@ -39,17 +30,14 @@ import Overview from "./overview"
 
 
 export default function CaseTabs({ caseData }) {
-    const [activeTab, setActiveTab] = useState("overview")
+    const [activeTab, setActiveTab] = useState("overview");
+    const caseDataJSON = caseData?.result_json ? JSON.parse(caseData?.result_json) : null;
+    const createObject = { result_data: caseDataJSON || {} };
 
     const tabsConfig = [
         { id: "overview", label: "Overview", icon: <Eye className="h-4 w-4" /> },
-        { id: "logs", label: "Logs", icon: <FileText className="h-4 w-4" /> },
-        { id: "parsed_logs", label: "Parsed Logs", icon: <Database className="h-4 w-4" /> },
-        { id: "alerts", label: "Alerts", icon: <AlertTriangle className="h-4 w-4" /> },
         { id: "investigation_results", label: "Investigation", icon: <Search className="h-4 w-4" /> },
         { id: "threat_intel_data", label: "Threat Intel", icon: <Target className="h-4 w-4" /> },
-        { id: "context_data", label: "Context Data", icon: <Network className="h-4 w-4" /> },
-        { id: "correlation_results", label: "Correlation", icon: <TrendingUp className="h-4 w-4" /> },
         { id: "fact_checker_results", label: "Fact Checker", icon: <FileCheck className="h-4 w-4" /> },
         { id: "explanation", label: "Explanation", icon: <MessageSquare className="h-4 w-4" /> },
         { id: "decision", label: "Decision", icon: <Settings className="h-4 w-4" /> },
@@ -72,7 +60,7 @@ export default function CaseTabs({ caseData }) {
                     </p>
                 </div>
             </div>
-
+            <Separator className="mb-4" />
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="mb-20">
                     <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 w-full">
@@ -89,22 +77,17 @@ export default function CaseTabs({ caseData }) {
                     </TabsList>
                 </div>
                 <Separator className="mb-4" />
-                <Overview caseData={caseData?.result_data} />
-                <Alerts caseData={caseData?.result_data} />
-                <Memory caseData={caseData?.result_data} />
-                <CaseSummary caseData={caseData?.result_data} />
-                <ContextData caseData={caseData?.result_data} />
-                <Correlation caseData={caseData?.result_data} />
-                <Decision caseData={caseData?.result_data} />
-                <Explanation caseData={caseData?.result_data} />
-                <FactChacker caseData={caseData?.result_data} />
-                <Investigation caseData={caseData?.result_data} />
-                <Logs caseData={caseData?.result_data} />
-                <ParsedLogs caseData={caseData?.result_data} />
-                <Remediation caseData={caseData?.result_data} />
-                <ThreatIntel caseData={caseData?.result_data} />
-                <Training caseData={caseData?.result_data} />
-                <TrustScores caseData={caseData?.result_data} />
+                <Overview caseData={createObject?.result_data} />
+                <Memory caseData={createObject?.result_data} />
+                <CaseSummary caseData={createObject?.result_data} />
+                <Decision caseData={createObject?.result_data} />
+                <Explanation caseData={createObject?.result_data} />
+                <FactChacker caseData={createObject?.result_data} />
+                <Investigation caseData={createObject?.result_data} />
+                <Remediation caseData={createObject?.result_data} />
+                <ThreatIntel caseData={createObject?.result_data} />
+                <Training caseData={createObject?.result_data} />
+                <TrustScores caseData={createObject?.result_data} />
             </Tabs>
         </div>
     )
