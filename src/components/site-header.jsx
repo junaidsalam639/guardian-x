@@ -1,12 +1,13 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import DarkLightToggle from "./dark-light-toogle"
-import { clearAuth } from "@/redux/authSlice"
-import { useDispatch } from "react-redux"
-import { useRouter } from "next/navigation"
-import toast from "react-hot-toast"
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import DarkLightToggle from "./dark-light-toogle";
+import { clearAuth } from "@/redux/authSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import Cookies from "js-cookie";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -14,16 +15,17 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import { LogOut, Settings, User } from "lucide-react"
+import { LogOut, Settings, User } from "lucide-react";
 
 export function SiteHeader() {
-  const dispatch = useDispatch()
-  const router = useRouter()
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleLogout = () => {
-    dispatch(clearAuth())
-    toast.success("Successfully logged out")
-    router.push("/")
+    Cookies.remove("token");
+    dispatch(clearAuth());
+    toast.success("Successfully logged out");
+    router.push("/");
   }
 
   return (
@@ -33,7 +35,7 @@ export function SiteHeader() {
         <Separator orientation="vertical" className="mx-2 h-4" />
         <div className="ml-auto flex items-center gap-2">
           <DarkLightToggle />
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="gap-2">

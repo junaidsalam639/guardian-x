@@ -16,7 +16,8 @@ import { useUserLoginApiMutation } from "@/service/authApi"
 import { Loader } from "lucide-react"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 import { setToken, setUser } from "@/redux/authSlice"
 
 export function UserLoginForm({ className, ...props }) {
@@ -36,6 +37,7 @@ export function UserLoginForm({ className, ...props }) {
     onSubmit: async (values) => {
       try {
         const response = await login({ ...values }).unwrap();
+        Cookies.set("token", response?.access_token);
         dispatch(setToken(response?.access_token));
         dispatch(setUser(response));
         toast.success(response?.message || "Client login successfully");
