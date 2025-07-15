@@ -48,7 +48,12 @@ const clientApi = createAPI.injectEndpoints({
     }),
 });
 
-export const { useGetClientQuery, useAddClientMutation, useDeleteClientMutation, useUpdateClientMutation } = clientApi;
+export const {
+    useGetClientQuery,
+    useAddClientMutation,
+    useDeleteClientMutation,
+    useUpdateClientMutation
+} = clientApi;
 
 
 

@@ -27,12 +27,16 @@ import ThreatIntel from "./threat-intel"
 import Training from "./training"
 import TrustScores from "./trust-scores"
 import Overview from "./overview"
+import { useGetCasesAgentOutputQuery } from "@/service/casesApi"
 
 
-export default function CaseTabs({ caseData }) {
+export default function CaseTabs({ caseData, id }) {
+    const { data, isLoading, error } = useGetCasesAgentOutputQuery(id);
     const [activeTab, setActiveTab] = useState("overview");
     const caseDataJSON = caseData?.result_json ? JSON.parse(caseData?.result_json) : null;
     const createObject = { result_data: caseDataJSON || {} };
+
+    console.log("Case Data:", data?.outputs);
 
     const tabsConfig = [
         { id: "overview", label: "Overview", icon: <Eye className="h-4 w-4" /> },
@@ -48,16 +52,15 @@ export default function CaseTabs({ caseData }) {
         { id: "case_summary", label: "Case Summary", icon: <FileText className="h-4 w-4" /> },
     ]
 
+    if (isLoading) return <p className="p-6 text-gray-600 dark:text-gray-300">Loading cases...</p>;
+    if (error) return <p className="p-6 text-red-500">Failed to load cases.</p>;
+
     return (
         <div className="w-full max-w-7xl mx-auto p-6 space-y-6">
             <div className="flex items-center gap-3 mb-6">
                 <Shield className="h-8 w-8 text-blue-600" />
                 <div>
                     <h1 className="text-3xl font-bold">Complete Security Case Management</h1>
-                    <p className="text-muted-foreground">
-                        Comprehensive Security Incident Analysis for {caseData?.username} -{" "}
-                        {new Date(caseData?.timestamp).toLocaleString()}
-                    </p>
                 </div>
             </div>
             <Separator className="mb-4" />

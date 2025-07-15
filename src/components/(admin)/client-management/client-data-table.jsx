@@ -118,7 +118,6 @@ export function ClientDataTable() {
         },
     ];
 
-
     const table = useReactTable({
         data,
         columns,
@@ -137,7 +136,6 @@ export function ClientDataTable() {
             toast.error(err?.data?.detail || "Something went wrong");
         }
     };
-
 
     if (isLoading) return <div className="p-4">Loading clients...</div>;
 
