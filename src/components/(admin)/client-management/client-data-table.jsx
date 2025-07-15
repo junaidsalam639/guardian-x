@@ -6,7 +6,6 @@ import {
     IconChevronsLeft,
     IconChevronsRight,
     IconDotsVertical,
-    IconPlus,
 } from "@tabler/icons-react"
 import {
     flexRender,
@@ -34,82 +33,91 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { useGetClientQuery } from "@/service/clientApi"
+import { useDeleteClientMutation, useGetClientQuery } from "@/service/clientApi"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { useDispatch } from "react-redux"
+import { setClientManagement } from "@/redux/clientManagementSlice"
+import toast from "react-hot-toast"
+import { Plus } from "lucide-react"
 
-const columns = [
-    {
-        accessorKey: "customer_id",
-        header: "Customer ID",
-        cell: ({ row }) => <div>{row.getValue("customer_id")}</div>,
-    },
-    {
-        accessorKey: "customer_uuid",
-        header: "UUID",
-        cell: ({ row }) => <div>{row.getValue("customer_uuid")}</div>,
-    },
-    {
-        accessorKey: "customer_name",
-        header: "Name",
-        cell: ({ row }) => <div>{row.getValue("customer_name")}</div>,
-    },
-    {
-        accessorKey: "customer_description",
-        header: "Description",
-        cell: ({ row }) => <div>{row.getValue("customer_description")}</div>,
-    },
-    {
-        id: "actions",
-        header: "Actions",
-        cell: ({ row }) => {
-            const client = row.original;
-            const username = encodeURIComponent(client.customer_name || "unknown");
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="size-8 p-0">
-                            <IconDotsVertical className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Link href={`/admin/add-client-management?username=${username}`}>
-                                Add Client
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleEdit(client)}>
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            onClick={() => handleDelete(client.id)}
-                            className="text-red-600"
-                        >
-                            Delete
-                        </DropdownMenuItem>
-
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            );
-        },
-    },
-];
-
-
-const handleEdit = (client) => {
-    console.log("Edit:", client);
-    // Navigate or open modal
-};
-
-const handleDelete = (id) => {
-    console.log("Delete ID:", id);
-    // Use mutation or confirmation
-};
 
 export function ClientDataTable() {
+    const [deleteClient] = useDeleteClientMutation();
     const { data: clientData, isLoading } = useGetClientQuery();
     const data = clientData?.api_data?.data || [];
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const columns = [
+        {
+            accessorKey: "customer_id",
+            header: "Customer ID",
+            cell: ({ row }) => <div>{row.getValue("customer_id")}</div>,
+        },
+        {
+            accessorKey: "customer_uuid",
+            header: "UUID",
+            cell: ({ row }) => <div>{row.getValue("customer_uuid")}</div>,
+        },
+        {
+            accessorKey: "customer_name",
+            header: "Name",
+            cell: ({ row }) => <div>{row.getValue("customer_name")}</div>,
+        },
+        {
+            accessorKey: "customer_description",
+            header: "Description",
+            cell: ({ row }) => <div>{row.getValue("customer_description")}</div>,
+        },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const client = row.original;
+                return (
+                    <>
+                        {client?.is_registered ? (
+                            <>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="size-8 p-0">
+                                            <IconDotsVertical className="h-4 w-4" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => {
+                                            dispatch(setClientManagement(client))
+                                            router.push("/admin/edit-client-management?value=edit")
+                                        }}>
+                                            Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem
+                                            onClick={() => handleDelete(client?.customer_id)}
+                                            className="text-red-600"
+                                        >
+                                            Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        dispatch(setClientManagement(client))
+                                        router.push("/admin/add-client-management?value=add")
+                                    }} className="mb-2 flex items-center gap-2">
+                                    <Plus className="w-4 h-4" />
+                                    Add
+                                </Button>
+                            </>
+                        )}
+                    </>
+                );
+            },
+        },
+    ];
+
 
     const table = useReactTable({
         data,
@@ -121,16 +129,22 @@ export function ClientDataTable() {
         getPaginationRowModel: getPaginationRowModel(),
     });
 
+    const handleDelete = async (id) => {
+        try {
+            const response = await deleteClient(id).unwrap();
+            toast.success(response?.message || "Client delete successfully");
+        } catch (err) {
+            toast.error(err?.data?.detail || "Something went wrong");
+        }
+    };
+
+
     if (isLoading) return <div className="p-4">Loading clients...</div>;
 
     return (
         <div className="space-y-4 p-6">
             <div className="flex items-center justify-between px-2">
                 <h2 className="text-xl font-semibold">Client Management</h2>
-                <Button onClick={() => router.push("/admin/add-client-management")} className="flex items-center gap-2">
-                    <IconPlus className="h-4 w-4" />
-                    Add Client
-                </Button>
             </div>
 
             <div className="border rounded-md overflow-x-auto">
@@ -225,3 +239,4 @@ export function ClientDataTable() {
         </div>
     );
 }
+

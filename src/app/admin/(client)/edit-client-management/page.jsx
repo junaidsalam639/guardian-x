@@ -2,7 +2,7 @@ import React from 'react'
 import { ClientForm } from '@/components/(admin)/client-management/client-form'
 import DashboardProvider from '@/providers/dashboard-provider'
 
-const AddClientManagementPage = () => {
+const EditClientManagementPage = () => {
   return (
     <DashboardProvider>
       <ClientForm />
@@ -10,5 +10,5 @@ const AddClientManagementPage = () => {
   )
 }
 
-export default AddClientManagementPage
+export default EditClientManagementPage
 

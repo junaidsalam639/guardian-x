@@ -14,21 +14,24 @@ import { useFormik } from "formik"
 import * as Yup from "yup"
 import toast from "react-hot-toast"
 import { Loader } from "lucide-react"
-import { useAddClientMutation } from "@/service/clientApi"
+import { useAddClientMutation, useUpdateClientMutation } from "@/service/clientApi"
 import { useRouter, useSearchParams } from "next/navigation"
+import { useSelector } from "react-redux"
 
-export function AddClientForm() {
+export function ClientForm() {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const username = searchParams.get("username");
-    const [addClient, { isLoading }] = useAddClientMutation();
+    const params = useSearchParams();
+    const [addClient, { isLoading: addIsLoading }] = useAddClientMutation();
+    const [updateClient, { isLoading: editIsLoading }] = useUpdateClientMutation();
+    const { client } = useSelector((state) => state.client);
+    const addEdit = params.get("value");
 
     const formik = useFormik({
         initialValues: {
-            username: username || "",
-            password: "",
-            name: "",
-            email: "",
+            username: client?.customer_name || "",
+            password: client?.password || "",
+            name: client?.name || "",
+            email: client?.email || "",
         },
         validationSchema: Yup.object({
             username: Yup.string().required("Username is required"),
@@ -38,8 +41,13 @@ export function AddClientForm() {
         }),
         onSubmit: async (values, actions) => {
             try {
-                const response = await addClient({ ...values }).unwrap();
-                toast.success(response?.message || "Client add successfully");
+                let response;
+                if (addEdit == "edit") {
+                    response = await updateClient({ ...values, id: client?.customer_id }).unwrap();
+                } else {
+                    response = await addClient({ ...values }).unwrap();
+                }
+                toast.success(response?.message || "successfully");
                 router.push("/admin/client-management");
                 actions.resetForm();
             } catch (err) {
@@ -52,7 +60,7 @@ export function AddClientForm() {
         <div className={cn("flex flex-col gap-6 h-screen justify-center w-xl mx-auto")}>
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-xl">Add Client</CardTitle>
+                    <CardTitle className="text-xl">Client Management</CardTitle>
                     <CardDescription className="text-sm">Fill in the details below to create a new client</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -60,7 +68,7 @@ export function AddClientForm() {
                         <div className="grid gap-3">
                             <Label htmlFor="username">Username</Label>
                             <Input
-                                disabled={username}
+                                disabled
                                 id="username"
                                 type="text"
                                 placeholder="client_username"
@@ -72,20 +80,7 @@ export function AddClientForm() {
                         </div>
 
                         <div className="grid gap-3">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                placeholder="••••••••"
-                                {...formik.getFieldProps("password")}
-                            />
-                            {formik.touched.password && formik.errors.password && (
-                                <p className="text-sm text-red-500">{formik.errors.password}</p>
-                            )}
-                        </div>
-
-                        <div className="grid gap-3">
-                            <Label htmlFor="name">Full Name</Label>
+                            <Label htmlFor="name">Name</Label>
                             <Input
                                 id="name"
                                 type="text"
@@ -110,13 +105,26 @@ export function AddClientForm() {
                             )}
                         </div>
 
-                        <Button type="submit" className="w-full" disabled={formik.isSubmitting || isLoading}>
-                            {formik.isSubmitting || isLoading ? (
+                        <div className="grid gap-3">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder="••••••••"
+                                {...formik.getFieldProps("password")}
+                            />
+                            {formik.touched.password && formik.errors.password && (
+                                <p className="text-sm text-red-500">{formik.errors.password}</p>
+                            )}
+                        </div>
+
+                        <Button type="submit" className="w-full" disabled={addIsLoading || editIsLoading}>
+                            {addIsLoading || editIsLoading ? (
                                 <div className="flex items-center gap-2 animate-pulse">
                                     <Loader className="h-4 w-4 animate-spin" />
                                 </div>
                             ) : (
-                                "Add Client"
+                                "Submit"
                             )}
                         </Button>
                     </form>
