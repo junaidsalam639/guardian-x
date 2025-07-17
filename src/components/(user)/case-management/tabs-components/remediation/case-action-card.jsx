@@ -1,26 +1,22 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { AlertTriangle, ChevronDown, ChevronRight, Code, CodeIcon, FileText, Settings, Target } from "lucide-react"
+import { getMethodColor } from "@/lib/get-color-icon-etc"
+import { AlertTriangle, ChevronDown, ChevronRight, Code, FileText, Settings, Target } from "lucide-react"
 import { useState } from "react"
+
+const CodeBlock = ({ code }) => {
+    return (
+        <div className="bg-slate-900 text-slate-100 p-4 rounded-md overflow-x-auto">
+            <pre className="text-sm">
+                <code>{code}</code>
+            </pre>
+        </div>
+    )
+}
 
 export const CaseActionCard = ({ action, index }) => {
     const [isExpanded, setIsExpanded] = useState(false)
-
-    const getMethodColor = (method) => {
-        switch (method) {
-            case "POST":
-                return "default"
-            case "GET":
-                return "secondary"
-            case "PUT":
-                return "outline"
-            case "DELETE":
-                return "destructive"
-            default:
-                return "outline"
-        }
-    }
 
     return (
         <Card className="border-l-4 border-l-blue-500">
@@ -87,7 +83,7 @@ export const CaseActionCard = ({ action, index }) => {
                                 <Code className="h-4 w-4" />
                                 Code Sample
                             </h4>
-                            <CodeIcon code={action.code_sample} />
+                            <CodeBlock code={action.code_sample} />
                         </div>
                     )}
                 </div>

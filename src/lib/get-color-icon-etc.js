@@ -30,3 +30,18 @@ export const getSeverityIcon = (severity) => {
     }
 }
 
+export const getMethodColor = (method) => {
+    switch (method) {
+        case "POST":
+            return "default"
+        case "GET":
+            return "secondary"
+        case "PUT":
+            return "outline"
+        case "DELETE":
+            return "destructive"
+        default:
+            return "outline"
+    }
+}
+

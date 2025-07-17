@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge"
 import {
   AlertTriangle,
 } from "lucide-react"
-import { getSeverityColor, getSeverityIcon } from "@/lib/getFun"
+import { getSeverityColor, getSeverityIcon } from "@/lib/get-color-icon-etc"
 
 export default function Alerts({ caseData }) {
   const alerts = caseData?.alerts || []

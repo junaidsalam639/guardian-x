@@ -4,7 +4,7 @@ import {
     AlertTriangle,
 } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { getSeverityColor, getSeverityIcon } from "@/lib/getFun"
+import { getSeverityColor, getSeverityIcon } from "@/lib/get-color-icon-etc"
 
 const Alerts = ({ investigation }) => {
     return (
