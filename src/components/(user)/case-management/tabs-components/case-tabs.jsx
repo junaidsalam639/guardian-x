@@ -12,15 +12,24 @@ import Remediation from "./remediation/remediation"
 import { useGetCasesAgentOutputQuery } from "@/service/casesApi"
 
 export default function CaseTabs({ id }) {
-    const { data, isLoading, error } = useGetCasesAgentOutputQuery(id);
-    const generate_final_report = data?.outputs?.find(output => output?.agent_name === "generate_final_report");
-    const generate_final_report_workflow = generate_final_report?.output_text?.input_data?.case_data?.workflow_results;
     const [activeTab, setActiveTab] = useState("investigation_results");
-
+    const { data, isLoading, error } = useGetCasesAgentOutputQuery(id);
     const tabsConfig = [
         { id: "investigation_results", label: "Investigation", icon: <Search className="h-4 w-4" /> },
         { id: "remediation", label: "Remediation", icon: <CheckCircle className="h-4 w-4" /> },
     ]
+
+    const investigation_workflow_launcher = data?.outputs?.find(
+        output => output?.agent_name === "investigation_workflow_launcher"
+    );
+
+    const remediation_workflow_launcher = data?.outputs?.find(
+        output => output?.agent_name === "remediation_workflow_launcher"
+    );
+
+    const response_workflow_launcher = data?.outputs?.find(
+        output => output?.agent_name === "response_workflow_launcher"
+    );
 
     if (isLoading) return <p className="p-6 text-gray-600 dark:text-gray-300">Loading cases...</p>;
     if (error) return <p className="p-6 text-red-500">Failed to load cases.</p>;
@@ -37,7 +46,7 @@ export default function CaseTabs({ id }) {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="mb-8">
                     <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 w-full">
-                        {tabsConfig.map((tab) => (
+                        {tabsConfig?.map((tab) => (
                             <TabsTrigger
                                 key={tab.id}
                                 value={tab.id}
@@ -50,8 +59,8 @@ export default function CaseTabs({ id }) {
                     </TabsList>
                 </div>
                 <Separator className="mb-4" />
-                <Investigation investigation={generate_final_report_workflow?.investigation} />
-                <Remediation remediation_strategy={generate_final_report_workflow?.remediation_strategy} />
+                <Investigation investigation={investigation_workflow_launcher?.output_text?.output_data} />
+                <Remediation remediation_strategy={remediation_workflow_launcher?.output_text?.output_data} />
             </Tabs>
         </div>
     )

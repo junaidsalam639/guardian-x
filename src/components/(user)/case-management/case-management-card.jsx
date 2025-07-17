@@ -16,7 +16,11 @@ import {
 const CaseManagementCard = () => {
     const { user } = useSelector((state) => state.auth);
     const [status, setStatus] = useState('');
-    const { data, isLoading, error } = useGetCasesQuery({ clientId: 3, status });
+    const queryParams = {
+        clientId: user?.client_id,
+        ...(status && status !== 'all' && { status }),
+    };
+    const { data, isLoading, error } = useGetCasesQuery(queryParams);
 
     return (
         <div className="p-6">
@@ -33,6 +37,7 @@ const CaseManagementCard = () => {
                         <SelectValue placeholder="Filter by Status" />
                     </SelectTrigger>
                     <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
                         <SelectItem value="open">Open</SelectItem>
                         <SelectItem value="in_progress">In Progress</SelectItem>
                         <SelectItem value="awaiting_approval">Awaiting Approval</SelectItem>

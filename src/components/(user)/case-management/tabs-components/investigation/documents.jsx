@@ -1,5 +1,7 @@
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { getSeverityColor, getSeverityIcon } from "@/lib/get-color-icon-etc"
 import {
     FileText,
 } from "lucide-react"
@@ -13,6 +15,10 @@ const Documents = ({ investigation }) => {
                     <CardTitle className="flex items-center gap-2">
                         <FileText className="h-5 w-5" />
                         Investigation Results
+                        <Badge variant={getSeverityColor(investigation?.threat_level)} className="flex items-center gap-1 w-fit">
+                            {getSeverityIcon(investigation?.threat_level)}
+                            {investigation?.threat_level?.toUpperCase()}
+                        </Badge>
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
