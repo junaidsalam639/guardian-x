@@ -18,38 +18,8 @@ import { TabsContent } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import {
   AlertTriangle,
-  XCircle,
-  AlertCircle,
-  Info,
 } from "lucide-react"
-
-const getSeverityColor = (severity) => {
-  switch (severity?.toLowerCase()) {
-    case "critical":
-    case "high":
-      return "destructive"
-    case "medium":
-      return "default"
-    case "low":
-      return "secondary"
-    default:
-      return "outline"
-  }
-}
-
-const getSeverityIcon = (severity) => {
-  switch (severity?.toLowerCase()) {
-    case "critical":
-      return <XCircle className="h-4 w-4" />
-    case "high":
-      return <AlertTriangle className="h-4 w-4" />
-    case "medium":
-      return <AlertCircle className="h-4 w-4" />
-    case "low":
-    default:
-      return <Info className="h-4 w-4" />
-  }
-}
+import { getSeverityColor, getSeverityIcon } from "@/lib/getFun"
 
 export default function Alerts({ caseData }) {
   const alerts = caseData?.alerts || []

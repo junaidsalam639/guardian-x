@@ -1,5 +1,5 @@
 import React from 'react'
-import CaseTabs from '@/components/(user)/case-management/case-tabs';
+import CaseTabs from '@/components/(user)/case-management/tabs-components/case-tabs';
 import DashboardProvider from '@/providers/dashboard-provider';
 
 async function CaseManagemenPage({ params }) {

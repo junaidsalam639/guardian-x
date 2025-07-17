@@ -16,7 +16,7 @@ import {
 const CaseManagementCard = () => {
     const { user } = useSelector((state) => state.auth);
     const [status, setStatus] = useState('');
-    const { data, isLoading, error } = useGetCasesQuery({ clientId: 2, status });
+    const { data, isLoading, error } = useGetCasesQuery({ clientId: 3, status });
 
     return (
         <div className="p-6">
@@ -84,3 +84,4 @@ const CaseManagementCard = () => {
 };
 
 export default CaseManagementCard;
+
