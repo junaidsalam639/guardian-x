@@ -6,10 +6,12 @@ import {
     Shield,
     CheckCircle,
     Search,
+    AlertCircle,
 } from "lucide-react"
 import Investigation from "./investigation/investigation"
 import Remediation from "./remediation/remediation"
 import { useGetCasesAgentOutputQuery } from "@/service/casesApi"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function CaseTabs({ id }) {
     const [activeTab, setActiveTab] = useState("investigation_results");
@@ -30,6 +32,9 @@ export default function CaseTabs({ id }) {
     const response_workflow_launcher = data?.outputs?.find(
         output => output?.agent_name === "response_workflow_launcher"
     );
+
+    const investigationData = investigation_workflow_launcher?.output_text?.output_data;
+    const remediationData = remediation_workflow_launcher?.output_text?.output_data;
 
     if (isLoading) return <p className="p-6 text-gray-600 dark:text-gray-300">Loading cases...</p>;
     if (error) return <p className="p-6 text-red-500">Failed to load cases.</p>;
@@ -59,8 +64,34 @@ export default function CaseTabs({ id }) {
                     </TabsList>
                 </div>
                 <Separator className="mb-4" />
-                <Investigation investigation={investigation_workflow_launcher?.output_text?.output_data} />
-                <Remediation remediation_strategy={remediation_workflow_launcher?.output_text?.output_data} />
+
+                {!investigationData && !remediationData ? (
+                    <Card className="bg-background border border-muted shadow-md rounded-2xl mt-6">
+                        <CardHeader className="flex flex-row items-center space-x-4">
+                            <div className="p-2 bg-yellow-100 text-yellow-700 rounded-full">
+                                <AlertCircle className="h-6 w-6" />
+                            </div>
+                            <div>
+                                <CardTitle className="text-lg font-semibold">No Workflow Data Available</CardTitle>
+                                <CardDescription className="text-sm text-muted-foreground">
+                                    We're unable to retrieve investigation or remediation details at the moment.
+                                </CardDescription>
+                            </div>
+                        </CardHeader>
+
+                        <CardContent className="pt-0 pl-16">
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                                This usually means the workflows are still processing or haven’t been triggered yet.
+                                Please check back later — the data will appear here automatically once available.
+                            </p>
+                        </CardContent>
+                    </Card>
+                ) : (
+                    <>
+                        <Investigation investigation={investigationData} />
+                        <Remediation remediation_strategy={remediationData} />
+                    </>
+                )}
             </Tabs>
         </div>
     )

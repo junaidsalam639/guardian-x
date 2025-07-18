@@ -15,7 +15,7 @@ import {
 
 const CaseManagementCard = () => {
     const { user } = useSelector((state) => state.auth);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState('all');
     const queryParams = {
         clientId: user?.client_id,
         ...(status && status !== 'all' && { status }),
@@ -34,7 +34,7 @@ const CaseManagementCard = () => {
 
                 <Select onValueChange={setStatus} value={status}>
                     <SelectTrigger className="w-[200px] text-sm">
-                        <SelectValue placeholder="Filter by Status" />
+                        <SelectValue placeholder="All" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">All</SelectItem>
