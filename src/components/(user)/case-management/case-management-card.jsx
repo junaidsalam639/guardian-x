@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useGetCasesQuery } from '@/service/casesApi';
@@ -78,12 +78,6 @@ const CaseManagementCard = () => {
                                     {caseItem?.case_name}
                                 </CardTitle>
                             </CardHeader>
-
-                            {/* <CardContent>
-                                <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md text-sm text-gray-700 dark:text-gray-200 line-clamp-4">
-                                    {caseItem?.case_description?.slice(0, 60)}...
-                                </div>
-                            </CardContent> */}
                         </Card>
                     </Link>
                 ))}

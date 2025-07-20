@@ -1,12 +1,10 @@
-import CyberSecruityAnalyze from '@/components/(user)/cyber-secruity/cyber-secruity-analyze';
 import DashboardProvider from '../../../providers/dashboard-provider';
+import CyberSecruityCard from '@/components/(user)/cyber-secruity/cyber-secruity-card';
 
 export default function CyberSecurityPage() {
     return (
         <DashboardProvider>
-            <div className="px-5">
-                <CyberSecruityAnalyze />
-            </div>
+            <CyberSecruityCard />
         </DashboardProvider>
     );
 }
