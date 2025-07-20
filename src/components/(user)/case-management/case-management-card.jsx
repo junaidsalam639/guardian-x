@@ -12,6 +12,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { cn } from '@/lib/utils';
+import { getStatusBadgeClasses } from '@/lib/get-color-icon-etc';
 
 const CaseManagementCard = () => {
     const { user } = useSelector((state) => state.auth);
@@ -64,25 +66,31 @@ const CaseManagementCard = () => {
 
                 {data?.cases?.map((caseItem) => (
                     <Link href={`/user/case-management/${caseItem?.case_id}`} key={caseItem?.case_id}>
-                        <Card
-                            className="cursor-pointer bg-white dark:bg-[#1f1f1f] border border-gray-200 dark:border-gray-700 rounded-2xl h-60 shadow-md
-                            transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg 
-                            hover:border-blue-500 dark:hover:border-blue-400"
-                        >
-                            <CardHeader className="flex flex-col items-start gap-2">
-                                <CardTitle className="text-lg font-semibold text-gray-800 dark:text-white">
-                                    {caseItem?.case_name}
-                                </CardTitle>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">ID: {caseItem?.case_id}</p>
+                        <Card className="cursor-pointer bg-white dark:bg-[#1f1f1f] border border-gray-200 dark:border-gray-700 rounded-2xl min-h-60 shadow-md transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:border-blue-500 dark:hover:border-blue-400">
+                            <CardHeader className="flex justify-between items-start gap-2">
+                                <div>
+                                    <CardTitle className="text-lg font-semibold text-gray-800 dark:text-white">
+                                        {caseItem?.case_name}
+                                    </CardTitle>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">ID: {caseItem?.case_id}</p>
+                                </div>
+                                <span className={cn(
+                                    "text-xs font-medium px-3 py-1 rounded-full",
+                                    getStatusBadgeClasses(caseItem?.status)
+                                )}>
+                                    {caseItem?.status || "Unknown"}
+                                </span>
                             </CardHeader>
+
                             <CardContent>
                                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md text-sm text-gray-700 dark:text-gray-200 line-clamp-4">
-                                    {caseItem?.case_description?.slice(0, 100)}...
+                                    {caseItem?.case_description?.slice(0, 60)}...
                                 </div>
                             </CardContent>
                         </Card>
                     </Link>
                 ))}
+
             </div>
         </div>
     );
