@@ -8,20 +8,20 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const ResponseCard = ({ response }) => {
+const OrchestrationCard = ({ orchestration }) => {
     const {
         status,
         next_step,
         api_actions_count,
         interrupt_info,
-    } = response || {};
+    } = orchestration || {};
 
     return (
         <Card className="shadow-md">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg font-bold">
                     <Workflow className="h-5 w-5 text-blue-600" />
-                    Response Orchestration
+                    Orchestration
                 </CardTitle>
             </CardHeader>
 
@@ -71,4 +71,4 @@ const ResponseCard = ({ response }) => {
     );
 };
 
-export default ResponseCard;
+export default OrchestrationCard;

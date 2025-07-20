@@ -14,7 +14,7 @@ import Investigation from "./investigation/investigation"
 import Remediation from "./remediation/remediation"
 import { useGetCasesAgentOutputQuery } from "@/service/casesApi"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ResponseCard from "./response/response-card"
+import OrchestrationCard from "./orchestration/orchestration-card"
 
 
 function CaseNotFoundError() {
@@ -28,7 +28,7 @@ function CaseNotFoundError() {
                     <div>
                         <CardTitle className="text-lg font-semibold">No Workflow Data Available</CardTitle>
                         <CardDescription className="text-sm text-muted-foreground">
-                            We're unable to retrieve investigation or remediation details at the moment.
+                            We're unable to retrieve details at the moment.
                         </CardDescription>
                     </div>
                 </CardHeader>
@@ -50,7 +50,7 @@ export default function CaseTabs({ id }) {
     const tabsConfig = [
         { id: "investigation_results", label: "Investigation", icon: <Search className="h-4 w-4" /> },
         { id: "remediation", label: "Remediation", icon: <ShieldCheck className="h-4 w-4" /> },
-        { id: "reponse_orchestration", label: "Response Orchestration", icon: <Workflow className="h-4 w-4" /> },
+        { id: "orchestration", label: "Orchestration", icon: <Workflow className="h-4 w-4" /> },
         { id: "final_summary", label: "Final Summary", icon: <FileText className="h-4 w-4" /> },
     ]
 
@@ -68,7 +68,7 @@ export default function CaseTabs({ id }) {
 
     const investigationData = investigation_workflow_launcher?.output_text?.output_data;
     const remediationData = remediation_workflow_launcher?.output_text?.output_data;
-    const responseData = response_workflow_launcher?.output_text?.output_data;
+    const orchestrationData = response_workflow_launcher?.output_text?.output_data;
 
     if (isLoading) return <p className="p-6 text-gray-600 dark:text-gray-300">Loading cases...</p>;
     if (error) return <p className="p-6 text-red-500">Failed to load cases.</p>;
@@ -116,12 +116,12 @@ export default function CaseTabs({ id }) {
                         </>
                     )}
                 </TabsContent>
-                <TabsContent className="space-y-4" value="reponse_orchestration">
-                    {!responseData ? (
+                <TabsContent className="space-y-4" value="orchestration">
+                    {!orchestrationData ? (
                         <CaseNotFoundError />
                     ) : (
                         <>
-                            <ResponseCard response={responseData} />
+                            <OrchestrationCard orchestration={orchestrationData} />
                         </>
                     )}
                 </TabsContent>
