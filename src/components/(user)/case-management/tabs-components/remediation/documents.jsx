@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 
 const Documents = ({ remediation_strategy }) => {
     return (
-        <Card>
+        <Card className="py-2">
             <CardContent>
                 <Accordion type="single" collapsible>
                     <AccordionItem value="document">

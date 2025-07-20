@@ -48,7 +48,7 @@ const RecommendedStrategy = ({ remediation_strategy }) => {
                 </CardContent>
             </Card>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card>
+                <Card className="py-2">
                     <CardContent>
                         <Accordion type="single" collapsible>
                             <AccordionItem value="execution-strategy">
@@ -122,7 +122,7 @@ const RecommendedStrategy = ({ remediation_strategy }) => {
                     </CardContent>
                 </Card>
 
-                <Card>
+                <Card className="py-2">
                     <CardContent>
                         <Accordion type="single" collapsible>
                             <AccordionItem value="cost-risk-analysis">

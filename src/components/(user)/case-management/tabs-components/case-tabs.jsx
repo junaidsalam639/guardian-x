@@ -89,8 +89,8 @@ export default function CaseTabs({ id }) {
                             <TabsTrigger
                                 key={tab.id}
                                 value={tab.id}
-                                className="flex items-center justify-center gap-2 px-3 py-2 h-12 rounded-md text-xs font-medium
-                                text-gray-700 bg-white hover:bg-gray-100 dark:bg-[#1f1f1f] dark:text-gray-200 dark:hover:bg-[#2a2a2a] data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black transition-all cursor-pointer">
+                                className="flex items-center justify-center gap-2 px-3 py-2 h-12 rounded-md text-xs font-medium text-gray-700 bg-white border border-black dark:border-white hover:bg-gray-100 dark:bg-[#1f1f1f] dark:text-gray-200 dark:hover:bg-[#2a2a2a] data-[state=active]:bg-black data-[state=active]:text-white  dark:data-[state=active]:bg-white dark:data-[state=active]:text-black transition-all cursor-pointer"
+                            >
                                 {tab.icon}
                                 <span className="hidden sm:inline">{tab.label}</span>
                             </TabsTrigger>

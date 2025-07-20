@@ -16,7 +16,7 @@ import {
 const Documents = ({ investigation }) => {
     return (
         <>
-            <Card>
+            <Card className="py-2">
                 <CardContent>
                     <Accordion type="single" collapsible>
                         <AccordionItem value="document">
