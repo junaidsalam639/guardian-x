@@ -8,7 +8,6 @@ import {
     AlertCircle,
     ShieldCheck,
     Workflow,
-    FileText,
 } from "lucide-react"
 import Investigation from "./investigation/investigation"
 import Remediation from "./remediation/remediation"
@@ -47,7 +46,7 @@ function CaseNotFoundError() {
 export default function CaseTabs({ id }) {
     const [activeTab, setActiveTab] = useState("investigation_results");
     const { data, isLoading, error } = useGetCasesAgentOutputQuery(id);
-   
+
     const investigation_workflow_launcher = data?.outputs?.find(
         output => output?.agent_name === "investigation_workflow_launcher"
     );
@@ -95,28 +94,32 @@ export default function CaseTabs({ id }) {
                 </div>
             </div>
             <Separator className="mb-4" />
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <div className="mb-8">
-                    <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 w-full">
-                        {filteredTabsConfig?.map((tab) => (
-                            <TabsTrigger
-                                key={tab.id}
-                                value={tab.id}
-                                className="flex items-center justify-center gap-2 px-3 py-2 h-12 rounded-md text-xs font-medium text-gray-700 bg-white border border-black dark:border-white hover:bg-gray-100 dark:bg-[#1f1f1f] dark:text-gray-200 dark:hover:bg-[#2a2a2a] data-[state=active]:bg-black data-[state=active]:text-white  dark:data-[state=active]:bg-white dark:data-[state=active]:text-black transition-all cursor-pointer"
-                            >
-                                {tab.icon}
-                                <span className="hidden sm:inline">{tab.label}</span>
-                            </TabsTrigger>
-                        ))}
-                    </TabsList>
-                </div>
-                <Separator className="mb-4" />
-                {filteredTabsConfig?.map((tab) => (
-                    <TabsContent key={tab.id} className="space-y-4" value={tab.id}>
-                        {tab.content}
-                    </TabsContent>
-                ))}
-            </Tabs>
+            {filteredTabsConfig?.length === 0 ? (
+                <CaseNotFoundError />
+            ) : (
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                    <div className="mb-8">
+                        <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 w-full">
+                            {filteredTabsConfig.map((tab) => (
+                                <TabsTrigger
+                                    key={tab.id}
+                                    value={tab.id}
+                                    className="flex items-center justify-center gap-2 px-3 py-2 h-12 rounded-md text-xs font-medium text-gray-700 bg-white border border-black dark:border-white hover:bg-gray-100 dark:bg-[#1f1f1f] dark:text-gray-200 dark:hover:bg-[#2a2a2a] data-[state=active]:bg-black data-[state=active]:text-white dark:data-[state=active]:bg-white dark:data-[state=active]:text-black transition-all cursor-pointer"
+                                >
+                                    {tab.icon}
+                                    <span className="hidden sm:inline">{tab.label}</span>
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
+                    </div>
+                    <Separator className="mb-4" />
+                    {filteredTabsConfig.map((tab) => (
+                        <TabsContent key={tab.id} className="space-y-4" value={tab.id}>
+                            {tab.content}
+                        </TabsContent>
+                    ))}
+                </Tabs>
+            )}
         </div>
     )
 }
