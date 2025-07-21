@@ -47,21 +47,13 @@ function CaseNotFoundError() {
 export default function CaseTabs({ id }) {
     const [activeTab, setActiveTab] = useState("investigation_results");
     const { data, isLoading, error } = useGetCasesAgentOutputQuery(id);
-    const tabsConfig = [
-        { id: "investigation_results", label: "Investigation", icon: <Search className="h-4 w-4" /> },
-        { id: "remediation", label: "Remediation", icon: <ShieldCheck className="h-4 w-4" /> },
-        { id: "orchestration", label: "Orchestration", icon: <Workflow className="h-4 w-4" /> },
-        { id: "final_summary", label: "Final Summary", icon: <FileText className="h-4 w-4" /> },
-    ]
-
+   
     const investigation_workflow_launcher = data?.outputs?.find(
         output => output?.agent_name === "investigation_workflow_launcher"
     );
-
     const remediation_workflow_launcher = data?.outputs?.find(
         output => output?.agent_name === "remediation_workflow_launcher"
     );
-
     const response_workflow_launcher = data?.outputs?.find(
         output => output?.agent_name === "response_workflow_launcher"
     );
@@ -69,6 +61,27 @@ export default function CaseTabs({ id }) {
     const investigationData = investigation_workflow_launcher?.output_text?.output_data;
     const remediationData = remediation_workflow_launcher?.output_text?.output_data;
     const orchestrationData = response_workflow_launcher?.output_text?.output_data;
+
+    const filteredTabsConfig = [
+        investigationData && {
+            id: "investigation_results",
+            label: "Investigation",
+            icon: <Search className="h-4 w-4" />,
+            content: <Investigation investigation={investigationData} />,
+        },
+        remediationData && {
+            id: "remediation",
+            label: "Remediation",
+            icon: <ShieldCheck className="h-4 w-4" />,
+            content: <Remediation remediation_strategy={remediationData} />,
+        },
+        orchestrationData && {
+            id: "orchestration",
+            label: "Orchestration",
+            icon: <Workflow className="h-4 w-4" />,
+            content: <OrchestrationCard orchestration={orchestrationData} />,
+        },
+    ].filter(Boolean);
 
     if (isLoading) return <p className="p-6 text-gray-600 dark:text-gray-300">Loading cases...</p>;
     if (error) return <p className="p-6 text-red-500">Failed to load cases.</p>;
@@ -85,7 +98,7 @@ export default function CaseTabs({ id }) {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                 <div className="mb-8">
                     <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 w-full">
-                        {tabsConfig?.map((tab) => (
+                        {filteredTabsConfig?.map((tab) => (
                             <TabsTrigger
                                 key={tab.id}
                                 value={tab.id}
@@ -98,37 +111,13 @@ export default function CaseTabs({ id }) {
                     </TabsList>
                 </div>
                 <Separator className="mb-4" />
-                <TabsContent className="space-y-4" value="investigation_results">
-                    {!investigationData ? (
-                        <CaseNotFoundError />
-                    ) : (
-                        <>
-                            <Investigation investigation={investigationData} />
-                        </>
-                    )}
-                </TabsContent>
-                <TabsContent className="space-y-4" value="remediation">
-                    {!remediationData ? (
-                        <CaseNotFoundError />
-                    ) : (
-                        <>
-                            <Remediation remediation_strategy={remediationData} />
-                        </>
-                    )}
-                </TabsContent>
-                <TabsContent className="space-y-4" value="orchestration">
-                    {!orchestrationData ? (
-                        <CaseNotFoundError />
-                    ) : (
-                        <>
-                            <OrchestrationCard orchestration={orchestrationData} />
-                        </>
-                    )}
-                </TabsContent>
-                <TabsContent className="space-y-4" value="final_summary">
-                    <CaseNotFoundError />
-                </TabsContent>
+                {filteredTabsConfig?.map((tab) => (
+                    <TabsContent key={tab.id} className="space-y-4" value={tab.id}>
+                        {tab.content}
+                    </TabsContent>
+                ))}
             </Tabs>
         </div>
     )
 }
+

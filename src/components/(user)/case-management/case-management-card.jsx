@@ -70,8 +70,8 @@ const CaseManagementCard = () => {
                             <CardHeader>
                                 <div className='flex justify-between'>
                                     <p className="text-sm text-gray-500 dark:text-gray-400">ID: {caseItem?.case_id}</p>
-                                    <div className={cn("text-xs font-medium px-3 py-1 rounded-full", getStatusBadgeClasses(caseItem?.status))}>
-                                        {caseItem?.status || "Unknown"}
+                                    <div className={cn("text-xs font-medium px-3 py-1 rounded-full capitalize", getStatusBadgeClasses(caseItem?.status))}>
+                                        {caseItem?.status?.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()) || "Unknown"}
                                     </div>
                                 </div>
                                 <CardTitle className="text-lg font-semibold text-gray-800 dark:text-white">

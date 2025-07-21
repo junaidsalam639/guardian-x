@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import DarkLightToggle from "./dark-light-toogle";
 import { clearAuth } from "@/redux/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Cookies from "js-cookie";
@@ -18,6 +18,7 @@ import {
 import { LogOut, Settings, User } from "lucide-react";
 
 export function SiteHeader() {
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -27,6 +28,8 @@ export function SiteHeader() {
     toast.success("Successfully logged out");
     router.push("/");
   }
+
+  console.log(user, 'user')
 
   return (
     <header className="flex h-[--header-height] items-center gap-2 border-b transition-all ease-linear">
@@ -45,8 +48,8 @@ export function SiteHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                Settings
+                <User className="mr-2 h-4 w-4" />
+                <span className="font-medium capitalize">{user?.username.replace(/_/g, ' ')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">
