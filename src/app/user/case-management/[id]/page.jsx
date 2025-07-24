@@ -4,7 +4,6 @@ import DashboardProvider from '@/providers/dashboard-provider';
 
 async function CaseManagemenPage({ params }) {
     const { id } = await params;
-    console.log("Case Management ID:", id);
     return (
         <>
             <DashboardProvider>

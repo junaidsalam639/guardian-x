@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield } from 'lucide-react';
-import Link from 'next/link';
 import { useGetCasesQuery } from '@/service/casesApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Select,
     SelectContent,
@@ -14,8 +13,12 @@ import {
 } from "@/components/ui/select";
 import { cn } from '@/lib/utils';
 import { getStatusBadgeClasses } from '@/lib/get-color-icon-etc';
+import { useRouter } from 'next/navigation';
+import { setCaseManagement } from '@/redux/singleCaseManagementSlice';
 
 const CaseManagementCard = () => {
+    const router = useRouter();
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
     const [status, setStatus] = useState('all');
     const queryParams = {
@@ -23,6 +26,11 @@ const CaseManagementCard = () => {
         ...(status && status !== 'all' && { status }),
     };
     const { data, isLoading, error } = useGetCasesQuery(queryParams);
+
+    const handlerNavigate = (caseItem) => {
+        dispatch(setCaseManagement(caseItem));
+        router.push(`/user/case-management/${caseItem?.case_id}`);
+    }
 
     return (
         <div className="p-6">
@@ -60,28 +68,26 @@ const CaseManagementCard = () => {
 
                 {!isLoading && data?.cases?.length === 0 && (
                     <p className="col-span-full text-gray-600 dark:text-gray-300">
-                        Retrieved 0 cases for client {status ? ` with status '${status}'` : ''}
+                        Retrieved 0 cases for client
+                        {status ? ` with status ${status?.replace(/_/g, ' ')?.replace(/\b\w/g, char => char.toUpperCase())}` : ''}
                     </p>
                 )}
 
                 {data?.cases?.map((caseItem) => (
-                    <Link href={`/user/case-management/${caseItem?.case_id}`} key={caseItem?.case_id}>
-                        <Card className="cursor-pointer bg-white dark:bg-[#1f1f1f] border border-gray-200 dark:border-gray-700 rounded-2xl min-h-40 shadow-md transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:border-blue-500 dark:hover:border-blue-400">
-                            <CardHeader>
-                                <div className='flex justify-between'>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">ID: {caseItem?.case_id}</p>
-                                    <div className={cn("text-xs font-medium px-3 py-1 rounded-full capitalize", getStatusBadgeClasses(caseItem?.status))}>
-                                        {caseItem?.status?.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()) || "Unknown"}
-                                    </div>
+                    <Card key={caseItem?.case_id} onClick={() => handlerNavigate(caseItem)} className="cursor-pointer bg-white dark:bg-[#1f1f1f] border border-gray-200 dark:border-gray-700 rounded-2xl min-h-40 shadow-md transition-transform duration-300 ease-in-out hover:scale-[1.02] hover:shadow-lg hover:border-blue-500 dark:hover:border-blue-400">
+                        <CardHeader>
+                            <div className='flex justify-between'>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">ID: {caseItem?.case_id}</p>
+                                <div className={cn("text-xs font-medium px-3 py-1 rounded-full capitalize", getStatusBadgeClasses(caseItem?.status))}>
+                                    {caseItem?.status?.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase()) || "Unknown"}
                                 </div>
-                                <CardTitle className="text-lg font-semibold text-gray-800 dark:text-white">
-                                    {caseItem?.case_name}
-                                </CardTitle>
-                            </CardHeader>
-                        </Card>
-                    </Link>
+                            </div>
+                            <CardTitle className="text-lg font-semibold text-gray-800 dark:text-white">
+                                {caseItem?.case_name}
+                            </CardTitle>
+                        </CardHeader>
+                    </Card>
                 ))}
-
             </div>
         </div>
     );

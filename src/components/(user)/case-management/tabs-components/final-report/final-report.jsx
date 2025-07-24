@@ -1,13 +1,11 @@
 "use client"
-import { Badge } from "@/components/ui/badge"
-import { getSeverityColor, getSeverityIcon } from "@/lib/get-color-icon-etc"
 import { Card, CardContent } from "@/components/ui/card"
+import Documents from "../documents"
 import { Accordion, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { FileText } from "lucide-react"
-import Documents from "../documents"
 
 
-export default function Investigation({ investigation }) {
+export default function FinalReport({ finalReport }) {
     return (
         <>
             <Card className="py-2">
@@ -17,14 +15,10 @@ export default function Investigation({ investigation }) {
                             <AccordionTrigger className="text-base font-semibold">
                                 <div className="flex items-center gap-2">
                                     <FileText className="h-5 w-5" />
-                                    Investigation Results
-                                    <Badge variant={getSeverityColor(investigation?.threat_level)} className="flex items-center gap-1 w-fit">
-                                        {getSeverityIcon(investigation?.threat_level)}
-                                        {investigation?.threat_level?.toUpperCase()}
-                                    </Badge>
+                                    Final Report
                                 </div>
                             </AccordionTrigger>
-                            <Documents documents={investigation?.investigation_report} />
+                            <Documents documents={finalReport?.final_incident_report} />
                         </AccordionItem>
                     </Accordion>
                 </CardContent>

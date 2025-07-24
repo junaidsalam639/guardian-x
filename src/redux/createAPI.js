@@ -15,7 +15,7 @@ export const createAPI = createApi({
         }
     }),
     endpoints: () => ({}),
-    tagTypes: ["client"]
+    tagTypes: ["client","casesAgentOutput"]
 });
 
 

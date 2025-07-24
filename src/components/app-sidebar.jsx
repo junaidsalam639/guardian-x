@@ -89,6 +89,11 @@ const data = {
       url: "/admin/client-management",
       icon: Users,
     },
+    {
+      title: "Client Cases",
+      url: "/admin/client-cases",
+      icon: Folder,
+    },
   ],
 }
 

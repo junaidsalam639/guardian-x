@@ -47,7 +47,7 @@ export function SiteHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
-                <span className="font-medium capitalize">{user?.username.replace(/_/g, ' ')}</span>
+                <span className="font-medium capitalize">{user?.username?.replace(/_/g, ' ')}</span>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout} className="text-red-600 focus:text-red-600">

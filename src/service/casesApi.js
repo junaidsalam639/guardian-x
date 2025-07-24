@@ -10,6 +10,21 @@ const casesApi = createAPI.injectEndpoints({
         }),
         getCasesAgentOutput: build.query({
             query: (id) => `/case/${id}/agent-outputs`,
+            providesTags: ["casesAgentOutput"]
+        }),
+        updateCaseStatus: build.mutation({
+            query: ({ caseId, status }) => ({
+                url: `case/${caseId}/status?status=${status}`,
+                method: "PUT",
+            }),
+        }),
+        approvalCaseOrchestration: build.mutation({
+            query: ({ caseId, decision }) => ({
+                url: `pending-approval/${caseId}`,
+                method: "POST",
+                body: { decision },
+            }),
+            invalidatesTags: ["casesAgentOutput"]
         }),
     }),
 });
@@ -17,7 +32,10 @@ const casesApi = createAPI.injectEndpoints({
 export const {
     useGetCasesQuery,
     useGetCasesAgentOutputQuery,
+    useUpdateCaseStatusMutation,
+    useApprovalCaseOrchestrationMutation
 } = casesApi;
+
 
 
 
