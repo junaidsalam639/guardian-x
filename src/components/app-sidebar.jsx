@@ -62,11 +62,11 @@ const data = {
       url: "/user/log-ingestion",
       icon: ServerIcon,
     },
-    {
-      title: "Detailed Analysis",
-      url: "/user/detailed-analysis",
-      icon: FileScan,
-    },
+    // {
+    //   title: "Detailed Analysis",
+    //   url: "/user/detailed-analysis",
+    //   icon: FileScan,
+    // },
     {
       title: "Case Management",
       url: "/user/case-management",

@@ -218,7 +218,7 @@ export default function CaseTabs({ id }) {
                         <DialogTitle>Are you sure?</DialogTitle>
                     </DialogHeader>
                     <div className="text-sm text-gray-600 dark:text-gray-300">
-                        You're about to close this case. This action may be final.
+                        You're about to {caseItem?.status === "open" ? "closed" : "open"} this case. This action may be final.
                     </div>
                     <DialogFooter className="mt-4">
                         <Button variant="outline" onClick={() => setShowDialog(false)}>
